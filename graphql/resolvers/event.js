@@ -13,19 +13,21 @@ module.exports = {
         throw err
       }),
 
-  createEvent: ({ eventInput }) => {
+  createEvent: ({ eventInput }, req) => {
+    if (!req.isAuth) {
+      throw new Error('Unauthenticated')
+    }
     const event = new Event({
       ...eventInput,
       date: formatDate(eventInput.date),
-      creator: '5cc5778b6cfad52093c70035'
+      creator: req.userId
     })
     let createdEvent
     return event
       .save()
       .then(event => {
         createdEvent = transformEvent(event)
-        // hardcoded while hadn't auth
-        return User.findById('5cc5778b6cfad52093c70035')
+        return User.findById(req.userId)
       })
       .then(user => {
         if (!user) throw new Error('User donesn\'t exists')
