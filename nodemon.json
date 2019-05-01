@@ -3,6 +3,7 @@
     "MONGO_USER": "zapahzamazk1",
     "MONGO_PASSWORD": "seaiKrRHKe75KgSm",
     "MONGO_DB": "event-booking",
-    "TOKEN_SECRET": "secret"
+    "TOKEN_SECRET": "secret",
+    "PORT": 4000
   }
 }
