@@ -3,23 +3,7 @@ const bcrypt = require('bcryptjs')
 const { transformUser } = require('./_merge')
 const jwt = require('jsonwebtoken')
 
-module.exports = {
-  createUser: ({ userInput: { email, password } }) =>
-    User.findOne({ email })
-      .then(user => {
-        if (user) throw new Error('User alredy exists')
-        return bcrypt.hash(password, 12)
-      })
-      .then(password =>
-        new User({
-          email,
-          password
-        }).save()
-      )
-      .then(user => transformUser(user))
-      .catch(err => {
-        throw err
-      }),
+exports.userQuery = {
   login: async ({ email, password }) => {
     try {
       const user = await User.findOne({ email })
@@ -39,4 +23,23 @@ module.exports = {
       throw err
     }
   }
+}
+
+exports.userMutation = {
+  createUser: ({ userInput: { email, password } }) =>
+    User.findOne({ email })
+      .then(user => {
+        if (user) throw new Error('User alredy exists')
+        return bcrypt.hash(password, 12)
+      })
+      .then(password =>
+        new User({
+          email,
+          password
+        }).save()
+      )
+      .then(user => transformUser(user))
+      .catch(err => {
+        throw err
+      })
 }

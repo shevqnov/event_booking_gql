@@ -3,7 +3,7 @@ const User = require('../../models/user')
 const { formatDate } = require('../../helpers')
 const { transformEvent } = require('./_merge')
 
-module.exports = {
+exports.eventQuery = {
   // @TODO: rewrite all promise chains to async/await constructions
   events: () =>
     Event.find()
@@ -11,8 +11,10 @@ module.exports = {
       .then(events => events.map(event => transformEvent(event)))
       .catch(err => {
         throw err
-      }),
+      })
+}
 
+exports.eventMutation = {
   createEvent: ({ eventInput }, req) => {
     if (!req.isAuth) {
       throw new Error('Unauthenticated')
